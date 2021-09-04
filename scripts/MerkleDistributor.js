@@ -15,14 +15,7 @@ async function main() {
 
     // We get the contract to deploy
 
-    const binance = "0x616eFd3E811163F8fc180611508D72D842EA7D07";
-    const binance_signer = await ethers.provider.getSigner(binance);
-    await hre.network.provider.request({
-      method: "hardhat_impersonateAccount",
-      params: [binance]
-    })
 
-    const MerkleDistributor = await hre.ethers.getContractFactory("MerkleDistributor");
 
     let j = {
       "merkleRoot": "0xf1bf64c53e557ba2f916bc9b849429224809c5fafe1aa7776aa0b9134bf80a02",
@@ -51,20 +44,24 @@ async function main() {
     }
     let merkleRoot = '0x3d0d9508a6cd4d834a2fa7a85b953ab9e5102005f2e6d7063791d780e00cd651'
 
-      let token = await hre.ethers.getContractAt("ERC20", "0x6B175474E89094C44Da98b954EedeAC495271d0F")
+    const PGLD = await hre.ethers.getContractFactory("PGLD");
+    const pgld = await PGLD.deploy();
+    await pgld.deployed();
+    console.log("pgld deployed to:", pgld.address);
+
+
 
 
       // let merkleRoot = j['merkleRoot']
-
-      const merkleDistributor = await MerkleDistributor.deploy(token.address, merkleRoot);
-
+      const MerkleDistributor = await hre.ethers.getContractFactory("MerkleDistributor");
+      const merkleDistributor = await MerkleDistributor.deploy(pgld.address, merkleRoot);
       await merkleDistributor.deployed();
 
       console.log("merkleDistributor deployed to:", merkleDistributor.address);
 
 
-      //transfer dai to distributor cointract
-      await token.connect(binance_signer).transfer(merkleDistributor.address, "8932822431107594059776")
+      //transfer pgld to distributor cointract
+      await pgld.transfer(merkleDistributor.address,"240000000000000000000000000");
 
 
       let account = "0x0000000000000000000000000000000000000001"
