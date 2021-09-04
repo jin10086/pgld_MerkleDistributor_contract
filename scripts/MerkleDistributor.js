@@ -52,12 +52,11 @@ async function main() {
     let merkleRoot = '0x3d0d9508a6cd4d834a2fa7a85b953ab9e5102005f2e6d7063791d780e00cd651'
 
       let token = await hre.ethers.getContractAt("ERC20", "0x6B175474E89094C44Da98b954EedeAC495271d0F")
-      let erc721token = await hre.ethers.getContractAt("@openzeppelin/contracts/token/ERC721/IERC721.sol:IERC721", "0xff9c1b15b16263c61d017ee9f65c50e4ae0113d7")
 
 
       // let merkleRoot = j['merkleRoot']
 
-      const merkleDistributor = await MerkleDistributor.deploy(token.address, merkleRoot, erc721token.address);
+      const merkleDistributor = await MerkleDistributor.deploy(token.address, merkleRoot);
 
       await merkleDistributor.deployed();
 
