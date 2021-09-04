@@ -69,6 +69,11 @@ async function main() {
       console.log(merkledata)
       await merkleDistributor.claim(merkledata.index, account, "8932822431107594059776", merkledata.proof);
 
+      //check isClaimed
+
+      let isClaimed = await merkleDistributor.isClaimed(merkledata.index)
+      console.log(account,isClaimed)
+
 
       // account = "0x0000000000000000000000000000000000004651"
       // merkledata = j['claims'][account]
